@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-RUN apk add --no-cache python3 py3-pip && \
-    pip3 install --no-cache-dir speedtest-cli --break-system-packages
+RUN apk add --no-cache curl
 
-CMD ["speedtest-cli"]
+CMD ["sh", "-c", "echo '=== VPS Network & ISP Details ===' && curl -s https://ipinfo.io/json"]
