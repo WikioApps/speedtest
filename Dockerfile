@@ -1,10 +1,3 @@
-FROM alpine:latest
+FROM adguard/adguardhome:latest
 
-RUN apk add --no-cache tinyproxy
-
-# Configure tinyproxy to allow connections from anywhere (or restrict it if needed)
-RUN sed -i 's/^Allow /#Allow /' /etc/tinyproxy/tinyproxy.conf
-
-EXPOSE 8888
-
-CMD ["tinyproxy", "-d"]
+EXPOSE 53/tcp 53/udp 80/tcp 3000/tcp
