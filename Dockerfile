@@ -1,5 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache curl && curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.alpine.sh | sh && apk add --no-cache speedtest
+RUN apk add --no-cache python3 py3-pip && \
+    pip3 install --no-cache-dir speedtest-cli --break-system-packages
 
-CMD ["speedtest", "--accept-license", "--accept-gdpr"]
+CMD ["speedtest-cli"]
