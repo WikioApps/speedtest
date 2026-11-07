@@ -1,3 +1,6 @@
-FROM adguard/adguardhome:latest
+FROM alpine:latest
 
-EXPOSE 53/tcp 53/udp 80/tcp 3000/tcp
+RUN apk add --no-cache rclone
+
+# Keeps the container alive so you can execute or schedule rclone sync jobs
+CMD ["tail", "-f", "/dev/null"]
