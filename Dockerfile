@@ -1,14 +1,10 @@
-FROM alpine:latest
+FROM php:8.2-apache
 
-# Install Nginx and standard PHP packages available in Alpine
-RUN apk add --no-cache nginx php php-fpm php-session php-ctype php-json php-mbstring curl && \
-    mkdir -p /var/www/html && \
-    curl -sL https://raw.githubusercontent.com/prasathmani/tinyfilemanager/master/tinyfilemanager.php -o /var/www/html/index.php && \
-    sed -i 's/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/g' /etc/php*/php-fpm.d/www.conf
+# Install curl and unzip to fetch Tiny File Manager
+RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
 
-# Configure Nginx to route PHP through the socket
-RUN echo "server { listen 80; root /var/www/html; index index.php; location / { try_files \$uri \$uri/ /index.php?\$args; } location ~ \.php\$ { include fastcgi_pass unix:/var/run/php/php-fpm.sock; include fastcgi.conf; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; } }" > /etc/nginx/http.d/default.conf
+# Download and set up Tiny File Manager as the default web root index
+RUN curl -sL https://raw.githubusercontent.com/prasathmani/tinyfilemanager/master/tinyfilemanager.php -o /var/www/html/index.php
 
+# Expose web port 80
 EXPOSE 80
-
-CMD ["sh", "-c", "php-fpm && nginx -g 'daemon off;'"]
