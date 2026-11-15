@@ -1,1 +1,1 @@
-FROM vs69/rapidleech:v1
+FROM vs69/mltb:latest
